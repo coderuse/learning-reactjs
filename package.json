@@ -1,0 +1,31 @@
+{
+  "name": "learning-reactjs",
+  "version": "0.0.0",
+  "description": "Personal learning project for ReactJS",
+  "main": "./dist/bundle.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coderuse/learning-reactjs.git"
+  },
+  "keywords": [
+    "reactjs",
+    "learning"
+  ],
+  "author": "Arnab Das <arnab@coderuse.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/coderuse/learning-reactjs/issues"
+  },
+  "homepage": "https://github.com/coderuse/learning-reactjs#readme",
+  "dependencies": {
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1"
+  },
+  "devDependencies": {
+    "source-map-loader": "^0.1.5",
+    "ts-loader": "^0.8.2"
+  }
+}
