@@ -4,6 +4,29 @@ This is my learning project for ReactJS. If someone gets benefit from it, that w
 
 Thanks.
 
+``` bash
+# Install globally
+npm install -g typescript typings webpack
+
+# Install project dependencies
+npm install
+
+# Link globally installed typescript instead of in a local folder
+npm link typescript
+
+# Install typings
+typings install --global --save dt~react
+typings install --global --save dt~react-dom
+
+# Bundle
+webpack
+
+# Run a webserver
+static -p 8000 -a 0.0.0.0 # Node-Static server
+# python -m SimpleHTTPServer -- 2.x < Python < 3.x 
+# python -m http.server -- Python > 3.x
+```
+
 The base folder structure and setup has been taken from official website of [Typescript](https://www.typescriptlang.org/docs/handbook/react-&-webpack.html).
 
 ```
