@@ -1,0 +1,26 @@
+{
+  "name": "learning-reactjs",
+  "description": "Personal learning project for ReactJS",
+  "main": "./dist/inde.html",
+  "authors": [
+    "Arnab Das <arnab@coderuse.com>"
+  ],
+  "license": "Apache-2.0",
+  "keywords": [
+    "reactjs",
+    "learning"
+  ],
+  "homepage": "https://github.com/coderuse/learning-reactjs",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "react": "^15.2.1"
+  }
+}
