@@ -119,6 +119,14 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
+	var __assign = (this && this.__assign) || Object.assign || function(t) {
+	    for (var s, i = 1, n = arguments.length; i < n; i++) {
+	        s = arguments[i];
+	        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+	            t[p] = s[p];
+	    }
+	    return t;
+	};
 	var React = __webpack_require__(1);
 	var Helpers = __webpack_require__(5);
 	var ShoppingItem = (function (_super) {
@@ -128,6 +136,26 @@
 	    }
 	    ShoppingItem.prototype.render = function () {
 	        return React.createElement("table", {className: "table"}, React.createElement("tbody", null, React.createElement("tr", null, React.createElement("td", {colSpan: "2"}, React.createElement("h3", null, this.props.name))), React.createElement("tr", null, React.createElement("td", null, "Price"), React.createElement("td", null, Helpers.Utils.priceToUSDString(this.props.price))), React.createElement("tr", null, React.createElement("td", null, "Quantity"), React.createElement("td", null, this.props.quantity))));
+	    };
+	    ShoppingItem.prototype.componentWillMount = function () {
+	        console.log('componentWillMount');
+	    };
+	    ShoppingItem.prototype.componentDidMount = function () {
+	        console.log('componentDidMount');
+	    };
+	    ShoppingItem.prototype.componentWillReceiveProps = function (newProps) {
+	        console.log(newProps);
+	    };
+	    ShoppingItem.prototype.componentWillUpdate = function (newProps, newState) {
+	        console.log(newProps);
+	        console.log(newState);
+	    };
+	    ShoppingItem.prototype.componentDidUpdate = function (oldProps, oldState) {
+	        console.log(oldProps);
+	        console.log(oldState);
+	    };
+	    ShoppingItem.prototype.componentWillUnmount = function () {
+	        console.log('componentWillUnmount');
 	    };
 	    return ShoppingItem;
 	}(React.Component));
@@ -150,7 +178,7 @@
 	    }
 	    ShoppingList.prototype.render = function () {
 	        return React.createElement("div", null, this.props.items.map(function (row, i) {
-	            return React.createElement(ShoppingItem, {key: row.key, name: row.name, price: row.price, quantity: row.quantity}, " ");
+	            return React.createElement(ShoppingItem, __assign({}, row), " ");
 	        }), React.createElement(ShoppingPriceTotal, {items: this.props.items}));
 	    };
 	    return ShoppingList;

@@ -1,0 +1,46 @@
+React.PropTypes
+
+Number, String, Bool, Object, Function, Array
+Node, Element
+
+React.PropTypes.___________
+1. instanceOf(class)
+2. oneOf([val1, val2, ...])
+3. oneOfType([propType1, propType2, ...])
+4. arrayOf(propType)
+5. objectOf(propType),
+6. shape({key: propType, ...})
+
+getDefaultProps: function () {
+    return {
+        foo: 'foo',
+        bar: []
+    };
+}
+
+==================
+
+React Component Life Cycle
+
+componentWillMount
+componentDidMount
+
+componentWillReceiveProps(newProps)
+componentWillUpdate(newProps, newState)
+componentDidUpdate(oldProps, oldState)
+
+componentWillUnmount
+
+####################
+
+shouldComponentUpdate(nextProps, nextState)
+
+####################
+
+==================
+
+React States
+
+getINitialState()
+
+this.setState({ foo: 'bar' })

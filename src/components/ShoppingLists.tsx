@@ -23,6 +23,30 @@ export class ShoppingItem extends React.Component<ShoppingItemProps, {}> {
       </tbody>
     </table>;
   }
+
+  componentWillMount() {
+    console.log('componentWillMount');
+  }
+
+  componentDidMount() {
+    console.log('componentDidMount');
+  }
+
+  componentWillReceiveProps(newProps: any) {
+    console.log(newProps);
+  }
+  componentWillUpdate(newProps: any, newState: any) {
+    console.log(newProps);
+    console.log(newState);
+  }
+  componentDidUpdate(oldProps: any, oldState: any) {
+    console.log(oldProps);
+    console.log(oldState);
+  }
+
+  componentWillUnmount() {
+    console.log('componentWillUnmount');
+  }
 }
 
 export interface ShoppingPriceTotalProps { items: Array<{ price: number }> }
@@ -46,7 +70,7 @@ export class ShoppingList extends React.Component<ShoppingListProps, {}> {
   render() {
     return <div>
       {this.props.items.map((row, i) => {
-        return <ShoppingItem key={row.key} name={row.name} price={row.price} quantity={row.quantity}> </ShoppingItem>;
+        return <ShoppingItem {...row}> </ShoppingItem>;
       }) }
       <ShoppingPriceTotal items={this.props.items}></ShoppingPriceTotal>
     </div>;

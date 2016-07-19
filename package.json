@@ -25,6 +25,11 @@
     "react-dom": "^15.2.1"
   },
   "devDependencies": {
+    "config": "^1.21.0",
+    "grunt-contrib-connect": "^1.0.2",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-webpack": "^1.0.11",
     "source-map-loader": "^0.1.5",
     "ts-loader": "^0.8.2"
   }
