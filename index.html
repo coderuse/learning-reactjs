@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>FB Auth</title>
+
+  <link rel="stylesheet" href="./vendor/bootstrap/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="col-md-offset-3 col-md-6 text-center">
+      <input type="button" id="btnFBAuth" value="FB Auth" class="btn btn-primary">
+    </div>
+  </div>
+
+  <script type="text/javascript" src="./vendor/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="./vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script type="text/javascript" lang="javascript">
+    $(window).ready(function(){
+      $('#btnFBAuth').click(function(){
+        
+        var url = 'https://www.facebook.com/dialog/oauth?client_id=';
+        url += 'client_id=' + '1232807850064154';
+        url += '&redirect_uri=' + encodeURIComponent('https://coderuse.github.io/learning-reactjs/home.html');
+        url += '&response_type=' + 'token';
+        url += '&scope=' + 'user_posts,manage_pages,manage_pages,publish_pages';
+
+        window.location = url;
+      });
+    });
+  </script>
+
+</body>
+
+</html>
