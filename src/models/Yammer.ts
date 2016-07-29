@@ -31,8 +31,8 @@ export class Stats {
     public updates = 0
   ) { }
 
-  static Box(obj): Stats {
-    if (typeof obj === 'Object' && obj !== null) {
+  static Box(obj: any): Stats {
+    if (obj) {
       return new Stats(
         Utils.tryParseNumber(obj.followers),
         Utils.tryParseNumber(obj.following),
@@ -65,8 +65,8 @@ export class User extends Reference {
     super(id, name, network_id, type, url, web_url);
   }
 
-  static Box(obj): User {
-    if (typeof obj === 'Object' && obj !== null) {
+  static Box(obj: any): User {
+    if (typeof obj !== 'undefined' && ('id' in obj)) {
       let stats = Stats.Box(obj.stats);
       return new User(obj.permalink, obj.user_id, obj.activated_at, obj.auto_activated,
         obj.email, obj.full_name, obj.id, obj.job_title, obj.mugshot_url, obj.mugshot_url_template,
@@ -101,8 +101,8 @@ export class Group extends Reference {
     super(id, name, network_id, type, url, web_url);
   }
 
-  static Box(obj): Group {
-    if (typeof obj === 'Object' && obj !== null) {
+  static Box(obj: any): Group {
+    if (typeof obj !== 'undefined' && ('id' in obj)) {
       return new Group(obj.color, obj.created_at, obj.description, obj.email,
         obj.external, obj.full_name, obj.id, obj.members, obj.moderated, obj.mugshot_id,
         obj.mugshot_url, obj.mugshot_url_template, obj.name, obj.network_id, obj.privacy,
@@ -175,7 +175,7 @@ export class Attachment {
     public web_url = ''
   ) { }
 
-  static Box(obj): Attachment {
+  static Box(obj: any): Attachment {
     if (typeof obj === 'Object' && obj !== null) {
       let content: string = obj.inline_html || obj.comment || '';
       return new Attachment(obj.id, content, obj.name, obj.network_id, obj.thumbnail_url, obj.web_url);
@@ -190,12 +190,12 @@ export class Liked_By {
     public names = new Array<User>()
   ) { }
 
-  static Box(obj): Liked_By {
+  static Box(obj: any): Liked_By {
     if (typeof obj === 'Object' && obj !== null &&
       typeof obj.names === 'Array' && obj.names.length > 0) {
-      let names = obj.names.map(function (name) {
-        return new User(obj.permalink, obj.user_id, '', false, '',
-          obj.full_name, 0, '', '', '', '', obj.network_id);
+      let names = obj.names.map(function (name: any) {
+        return new User(name.permalink, name.user_id, '', false, '',
+          name.full_name, 0, '', '', '', '', name.network_id);
       });
       return new Liked_By(obj.count, names);
     }
@@ -231,12 +231,12 @@ export class Message {
     public web_url = ''
   ) { }
 
-  static Box(obj): Message {
-    if (typeof obj === 'Object' && obj !== null) {
+  static Box(obj: any): Message {
+    if (typeof obj !== 'undefined' && ('id' in obj)) {
       let attachments: Array<Attachment>;
       let body: string = obj.body.rich || obj.body.plain || obj.body.plain || '';
       if (typeof obj.attachments === 'Array' && obj.attachments.length > 0) {
-        attachments = obj.attachments.map(function (attch) {
+        attachments = obj.attachments.map(function (attch: any) {
           return Attachment.Box(attch);
         });
       }

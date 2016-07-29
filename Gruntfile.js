@@ -20,11 +20,11 @@ module.exports = function (grunt) {
       build: {
         options: {
           port: portConfig.build,
-          base: 'dist',
+          base: 'dist'/*,
           livereload: portConfig.livereload,
           open: {
             target: 'http://127.0.0.1:<%= connect.build.options.port %>/index.html'
-          }
+          }*/
         }
       }
     },
@@ -33,7 +33,8 @@ module.exports = function (grunt) {
         options: {
           sourcemap: 'none',
           style: 'expanded',
-          trace: true
+          trace: true,
+          require: ['susy', 'normalize-scss']
         },
         files: {
           'dist/app.css': 'sass/main.scss'
@@ -87,10 +88,10 @@ module.exports = function (grunt) {
       jsChanges: {
         files: ['src/**/*.ts', 'src/**/*.tsx'],
         tasks: ['webpack']
-      },
+      }/*,
       sources: {
         options: {
-          spawn: false,
+          spawn: false ,
           livereload: portConfig.livereload
         },
         files: [
@@ -98,7 +99,7 @@ module.exports = function (grunt) {
           'dist/app.css',
           'dist/index.html'
         ]
-      }
+      }*/
     }
   });
 

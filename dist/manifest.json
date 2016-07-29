@@ -12,12 +12,6 @@
     "default_title": "Yam'in",
     "default_popup": "index.html"
   },
-  "keywords": [
-    "Chrome",
-    "Pramati",
-    "Yammer",
-    "Yam'in"
-  ],
   "content_scripts": [
     {
       "matches": ["https://www.yammer.com/robots.txt*"],
@@ -36,7 +30,7 @@
     "oauth2/oauth2.html","./img/plugin-logo-default.png"
   ],
   "background": {
-    "scripts": ["libs/js/jquery-2.1.1.js", "background.js"]
+    "scripts": ["./vendor/jquery/dist/jquery.min.js", "background.js"]
   },
   "content_security_policy": "script-src 'self'; object-src 'self'"
 }

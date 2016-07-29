@@ -4,6 +4,7 @@ var yammer = new OAuth2('yammer', {
 });
 
 yammer.authorize(function() {
+  var acc = yammer.getAccessToken();
   // store the accessToken for background script
-  chrome.storage.local.set({'newAccessToken': yammer.getAccessToken()});
+  localStorage.setItem('newAccessToken', acc);
 });

@@ -14,8 +14,8 @@ export class StorageItem {
 }
 
 export class Utils {
-  public static localStorageSupported = 
-  typeof window['localStorage'] != "undefined" && window['localStorage'] != null;
+  public static localStorageSupported =
+  typeof window['localStorage'] !== "undefined" && window['localStorage'] !== null;
 
   // add value to storage
   public static add(key: string, item: string) {
@@ -61,6 +61,7 @@ export class Utils {
   public static get(key: string): string {
     if (Utils.localStorageSupported) {
       var item = localStorage.getItem(key);
+
       return item;
     } else {
       return null;
@@ -79,6 +80,14 @@ export class Utils {
     if (Utils.localStorageSupported) {
       localStorage.clear();
     }
+  }
+
+  public static getReferenceById(type: string, ref_id: number, references: Array<any>): any {
+    var matchedReference = $.grep(references, function (reference) {
+      return reference.type === type && reference.id == ref_id;
+    });
+
+    return matchedReference.length > 0 ? matchedReference[0] : {};
   }
 
   public static priceToUSDString(price: number): string {
