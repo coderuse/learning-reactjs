@@ -45,12 +45,45 @@ img {
   @include span(6);
 }
 
+.uppercase {
+  text-transform: uppercase;
+}
+
 #header,#footer,#content { position:absolute; right:0;left:0}
 
 #header{
   border: 0 0 1px 0 solid #eee;
 	height:55px; top:0;
 	background-color: #fff;
+  display: inline-flex;
+    
+  ul {
+    display: inline;
+    list-style: none;
+    &::before {
+      display: table;
+      content: " ";
+    }
+    &::after {
+      clear: both;
+    }
+    li {
+      margin: 10px;
+      float: left;
+      position: relative;
+      display: block;
+      top: -6px;
+      a {
+        color: #2196F3;
+        &:visited {
+          color: #2196F3;
+        }
+        &.active {
+          color: #386cbb;
+        }
+      }
+    }
+  }
 }
 #content{
   top:55px;

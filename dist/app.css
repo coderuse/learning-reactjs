@@ -565,6 +565,10 @@ img.circle {
   margin-right: 0;
 }
 
+.uppercase {
+  text-transform: uppercase;
+}
+
 #header, #footer, #content {
   position: absolute;
   right: 0;
@@ -576,6 +580,34 @@ img.circle {
   height: 55px;
   top: 0;
   background-color: #fff;
+  display: inline-flex;
+}
+#header ul {
+  display: inline;
+  list-style: none;
+}
+#header ul::before {
+  display: table;
+  content: " ";
+}
+#header ul::after {
+  clear: both;
+}
+#header ul li {
+  margin: 10px;
+  float: left;
+  position: relative;
+  display: block;
+  top: -6px;
+}
+#header ul li a {
+  color: #2196F3;
+}
+#header ul li a:visited {
+  color: #2196F3;
+}
+#header ul li a.active {
+  color: #386cbb;
 }
 
 #content {

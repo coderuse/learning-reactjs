@@ -48,7 +48,7 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(2);
 	var Yam_1 = __webpack_require__(3);
-	var Helpers_1 = __webpack_require__(5);
+	var Helpers_1 = __webpack_require__(6);
 	var accessToken = Helpers_1.Utils.get('newAccessToken');
 	ReactDOM.render(React.createElement(Yam_1.YamApp, {accessToken: accessToken}), document.getElementById("example"));
 
@@ -77,9 +77,11 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var React = __webpack_require__(1);
-	var Feed_1 = __webpack_require__(4);
-	var Yammer_1 = __webpack_require__(6);
+	var Constants_1 = __webpack_require__(4);
+	var Yammer_1 = __webpack_require__(5);
 	var Yammer_2 = __webpack_require__(7);
+	var Feed_1 = __webpack_require__(9);
+	var Navs_1 = __webpack_require__(10);
 	var YamApp = (function (_super) {
 	    __extends(YamApp, _super);
 	    function YamApp(props) {
@@ -89,7 +91,12 @@
 	        };
 	        this.api = new Yammer_2.YamAPI(props.accessToken);
 	    }
+	    YamApp.prototype.navClicked = function (id) {
+	        this.refs['feed'].changeState(id);
+	        console.log(id);
+	    };
 	    YamApp.prototype.componentDidMount = function () {
+	        this.refs['headerPills'].changeNavs(Constants_1.feedNavs);
 	        var p = this.api.call('currentUser', {});
 	        p.done(function (data) {
 	            this.setState({
@@ -98,7 +105,7 @@
 	        }.bind(this));
 	    };
 	    YamApp.prototype.render = function () {
-	        return (React.createElement("div", null, React.createElement("div", {id: "header"}, React.createElement("img", {className: "circle", src: this.state.currentUser.mugshot_url})), React.createElement("div", {id: "content"}, React.createElement(Feed_1.Feed, {api: this.api})), React.createElement("div", {id: "footer"}, React.createElement("a", {href: "javascript:void();", className: "active"}, React.createElement("span", {className: "yamcon-home"})), React.createElement("a", {href: "javascript:void();"}, React.createElement("span", {className: "yamcon-markunread"})), React.createElement("a", {href: "javascript:void();"}, React.createElement("span", {className: "yamcon-notifications"})), React.createElement("a", {href: "javascript:void();"}, React.createElement("span", {className: "yamcon-people"})), React.createElement("a", {href: "javascript:void();"}, React.createElement("span", {className: "yamcon-wc"})), React.createElement("a", {href: "javascript:void();"}, React.createElement("span", {className: "yamcon-view_headline"})), React.createElement("a", {href: "javascript:void();"}, React.createElement("span", {className: "yamcon-info"})))));
+	        return (React.createElement("div", null, React.createElement("div", {id: "header"}, React.createElement("img", {className: "circle", src: this.state.currentUser.mugshot_url}), React.createElement(Navs_1.NavPills, {ref: "headerPills", navClicked: this.navClicked.bind(this)})), React.createElement("div", {id: "content"}, React.createElement(Feed_1.Feed, {ref: "feed", api: this.api, stateId: "all"})), React.createElement("div", {id: "footer"}, React.createElement("a", {href: "javascript:void();", className: "active"}, React.createElement("span", {className: "yamcon-home"})), React.createElement("a", {href: "javascript:void();"}, React.createElement("span", {className: "yamcon-markunread"})), React.createElement("a", {href: "javascript:void();"}, React.createElement("span", {className: "yamcon-notifications"})), React.createElement("a", {href: "javascript:void();"}, React.createElement("span", {className: "yamcon-people"})), React.createElement("a", {href: "javascript:void();"}, React.createElement("span", {className: "yamcon-wc"})), React.createElement("a", {href: "javascript:void();"}, React.createElement("span", {className: "yamcon-view_headline"})), React.createElement("a", {href: "javascript:void();"}, React.createElement("span", {className: "yamcon-info"})))));
 	    };
 	    return YamApp;
 	}(React.Component));
@@ -107,172 +114,18 @@
 
 /***/ },
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	/// <reference path="../../typings/index.d.ts" />
 	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var React = __webpack_require__(1);
-	var Helpers_1 = __webpack_require__(5);
-	var Yammer_1 = __webpack_require__(6);
-	var FeedItem = (function (_super) {
-	    __extends(FeedItem, _super);
-	    function FeedItem(props) {
-	        _super.call(this, props);
-	        this.state = props.message;
-	    }
-	    FeedItem.prototype.render = function () {
-	        var message = this.state;
-	        var sender = Yammer_1.User.Box(Helpers_1.Utils.getReferenceById(message.sender_type, message.sender_id, this.props.references));
-	        var group = Yammer_1.Group.Box(Helpers_1.Utils.getReferenceById('group', message.group_created_id, this.props.references));
-	        var innerHtml = {
-	            __html: message.body
-	        };
-	        return (React.createElement("div", {className: "msg"}, React.createElement("div", {className: "row"}, React.createElement("div", {className: "header"}, React.createElement("div", {className: "sender"}, React.createElement("div", {className: "pic"}, React.createElement("a", {href: "javascript:void()"}, React.createElement("img", {src: sender.mugshot_url}))), React.createElement("div", {className: "name"}, sender.full_name)))), React.createElement("div", {className: "row"}, React.createElement("div", {dangerouslySetInnerHTML: innerHtml}), message.attachments.map(function (attch) {
-	            console.log(attch.content);
-	            var attchInnerHtml = {
-	                __html: attch.content
-	            };
-	            return (React.createElement("div", {key: attch.id, className: "row"}, React.createElement("h3", null, attch.name), React.createElement("div", {dangerouslySetInnerHTML: attchInnerHtml})));
-	        }))));
-	    };
-	    return FeedItem;
-	}(React.Component));
-	exports.FeedItem = FeedItem;
-	var Feed = (function (_super) {
-	    __extends(Feed, _super);
-	    function Feed(props) {
-	        _super.call(this, props);
-	        this.state = {
-	            references: new Array(),
-	            messages: new Array()
-	        };
-	    }
-	    Feed.prototype.componentDidMount = function () {
-	        var p = this.props.api.call('allFeed', {}, { threaded: 'extended', limit: '20' });
-	        p.done(function (data) {
-	            this.setState({
-	                references: data.references,
-	                messages: data.messages.map(function (msg) { return Yammer_1.Message.Box(msg); })
-	            });
-	        }.bind(this));
-	    };
-	    Feed.prototype.render = function () {
-	        var self = this;
-	        return (React.createElement("div", null, this.state.messages.map(function (msg) {
-	            return React.createElement(FeedItem, {key: msg.id, message: msg, references: self.state.references});
-	        })));
-	    };
-	    return Feed;
-	}(React.Component));
-	exports.Feed = Feed;
+	exports.feedNavs = [
+	    { id: 'all', displayText: 'All' },
+	    { id: 'top', displayText: 'Top' },
+	    { id: 'following', displayText: 'Following' }
+	];
 
 
 /***/ },
 /* 5 */
-/***/ function(module, exports) {
-
-	"use strict";
-	var StorageItem = (function () {
-	    function StorageItem(data) {
-	        this.key = data.key;
-	        this.value = data.value;
-	    }
-	    return StorageItem;
-	}());
-	exports.StorageItem = StorageItem;
-	var Utils = (function () {
-	    function Utils() {
-	    }
-	    // add value to storage
-	    Utils.add = function (key, item) {
-	        if (Utils.localStorageSupported) {
-	            localStorage.setItem(key, item);
-	        }
-	    };
-	    // get all values from storage (all items)
-	    Utils.getAllItems = function () {
-	        var list = new Array();
-	        for (var i = 0; i < localStorage.length; i++) {
-	            var key = localStorage.key(i);
-	            var value = localStorage.getItem(key);
-	            list.push(new StorageItem({
-	                key: key,
-	                value: value
-	            }));
-	        }
-	        return list;
-	    };
-	    // get only all values from localStorage
-	    Utils.getAllValues = function () {
-	        var list = new Array();
-	        if (Utils.localStorageSupported) {
-	            for (var i = 0; i < localStorage.length; i++) {
-	                var key = localStorage.key(i);
-	                var value = localStorage.getItem(key);
-	                list.push(value);
-	            }
-	        }
-	        return list;
-	    };
-	    // get one item by key from storage
-	    Utils.get = function (key) {
-	        if (Utils.localStorageSupported) {
-	            var item = localStorage.getItem(key);
-	            return item;
-	        }
-	        else {
-	            return null;
-	        }
-	    };
-	    // remove value from storage
-	    Utils.remove = function (key) {
-	        if (Utils.localStorageSupported) {
-	            localStorage.removeItem(key);
-	        }
-	    };
-	    // clear storage (remove all items from it)
-	    Utils.clear = function () {
-	        if (Utils.localStorageSupported) {
-	            localStorage.clear();
-	        }
-	    };
-	    Utils.getReferenceById = function (type, ref_id, references) {
-	        var matchedReference = $.grep(references, function (reference) {
-	            return reference.type === type && reference.id == ref_id;
-	        });
-	        return matchedReference.length > 0 ? matchedReference[0] : {};
-	    };
-	    Utils.priceToUSDString = function (price) {
-	        return '$' + price.toFixed(2);
-	    };
-	    Utils.tryParseNumber = function (str, radix, defaultValue) {
-	        if (str === void 0) { str = ''; }
-	        if (radix === void 0) { radix = 10; }
-	        if (defaultValue === void 0) { defaultValue = 0; }
-	        var retValue = defaultValue;
-	        if (str !== null) {
-	            if (typeof str === 'String' && str.length > 0) {
-	                retValue = parseInt(str, radix);
-	                if (isNaN(retValue)) {
-	                    retValue = defaultValue;
-	                }
-	            }
-	        }
-	        return retValue;
-	    };
-	    Utils.localStorageSupported = typeof window['localStorage'] !== "undefined" && window['localStorage'] !== null;
-	    return Utils;
-	}());
-	exports.Utils = Utils;
-
-
-/***/ },
-/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/// <reference path="../../typings/index.d.ts" />
@@ -282,7 +135,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Helpers_1 = __webpack_require__(5);
+	var Helpers_1 = __webpack_require__(6);
 	var Reference = (function () {
 	    function Reference(id, name, network_id, type, url, web_url) {
 	        if (id === void 0) { id = 0; }
@@ -343,7 +196,7 @@
 	        if (full_name === void 0) { full_name = ''; }
 	        if (id === void 0) { id = 0; }
 	        if (job_title === void 0) { job_title = ''; }
-	        if (mugshot_url === void 0) { mugshot_url = ''; }
+	        if (mugshot_url === void 0) { mugshot_url = 'https://mug0.assets-yammer.com/mugshot/images/48x48/no_photo.png'; }
 	        if (mugshot_url_template === void 0) { mugshot_url_template = ''; }
 	        if (name === void 0) { name = ''; }
 	        if (network_id === void 0) { network_id = 0; }
@@ -643,6 +496,105 @@
 
 
 /***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	"use strict";
+	var StorageItem = (function () {
+	    function StorageItem(data) {
+	        this.key = data.key;
+	        this.value = data.value;
+	    }
+	    return StorageItem;
+	}());
+	exports.StorageItem = StorageItem;
+	var Utils = (function () {
+	    function Utils() {
+	    }
+	    // add value to storage
+	    Utils.add = function (key, item) {
+	        if (Utils.localStorageSupported) {
+	            localStorage.setItem(key, item);
+	        }
+	    };
+	    // get all values from storage (all items)
+	    Utils.getAllItems = function () {
+	        var list = new Array();
+	        for (var i = 0; i < localStorage.length; i++) {
+	            var key = localStorage.key(i);
+	            var value = localStorage.getItem(key);
+	            list.push(new StorageItem({
+	                key: key,
+	                value: value
+	            }));
+	        }
+	        return list;
+	    };
+	    // get only all values from localStorage
+	    Utils.getAllValues = function () {
+	        var list = new Array();
+	        if (Utils.localStorageSupported) {
+	            for (var i = 0; i < localStorage.length; i++) {
+	                var key = localStorage.key(i);
+	                var value = localStorage.getItem(key);
+	                list.push(value);
+	            }
+	        }
+	        return list;
+	    };
+	    // get one item by key from storage
+	    Utils.get = function (key) {
+	        if (Utils.localStorageSupported) {
+	            var item = localStorage.getItem(key);
+	            return item;
+	        }
+	        else {
+	            return null;
+	        }
+	    };
+	    // remove value from storage
+	    Utils.remove = function (key) {
+	        if (Utils.localStorageSupported) {
+	            localStorage.removeItem(key);
+	        }
+	    };
+	    // clear storage (remove all items from it)
+	    Utils.clear = function () {
+	        if (Utils.localStorageSupported) {
+	            localStorage.clear();
+	        }
+	    };
+	    Utils.getReferenceById = function (type, ref_id, references) {
+	        var matchedReference = $.grep(references, function (reference) {
+	            return reference.type === type && reference.id == ref_id;
+	        });
+	        return matchedReference.length > 0 ? matchedReference[0] : {};
+	    };
+	    Utils.priceToUSDString = function (price) {
+	        return '$' + price.toFixed(2);
+	    };
+	    Utils.tryParseNumber = function (str, radix, defaultValue) {
+	        if (str === void 0) { str = ''; }
+	        if (radix === void 0) { radix = 10; }
+	        if (defaultValue === void 0) { defaultValue = 0; }
+	        var retValue = defaultValue;
+	        if (str !== null) {
+	            if (typeof str === 'String' && str.length > 0) {
+	                retValue = parseInt(str, radix);
+	                if (isNaN(retValue)) {
+	                    retValue = defaultValue;
+	                }
+	            }
+	        }
+	        return retValue;
+	    };
+	    Utils.localStorageSupported = typeof window['localStorage'] !== "undefined" && window['localStorage'] !== null;
+	    return Utils;
+	}());
+	exports.Utils = Utils;
+
+
+/***/ },
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -689,21 +641,32 @@
 	            }
 	        });
 	    };
-	    YamAPI.prototype.call = function (name, data, parameters) {
+	    YamAPI.prototype.call = function (name, data, parameters, urlInputs) {
 	        var callConf = Endpoints_1.endPoints[name];
 	        if (typeof callConf === 'undefined') {
 	            throw new ReferenceError('Undefined API name.');
 	        }
 	        var d = $.Deferred();
 	        var params = new Array();
-	        for (var p in parameters) {
-	            if (parameters.hasOwnProperty(p)) {
-	                params.push(p + '=' + parameters[p]);
+	        var url = callConf.url;
+	        // This is costly regarding the space and computation. Use this cautiously
+	        if (urlInputs) {
+	            for (var i in urlInputs) {
+	                if (urlInputs.hasOwnProperty(i)) {
+	                    var r = new RegExp('/\{%' + i + '%\}', 'g');
+	                    url.replace(r, urlInputs[i]);
+	                }
 	            }
 	        }
-	        var url = callConf.url;
-	        if (params.length > 0) {
-	            url += '?' + params.join('&');
+	        if (parameters) {
+	            for (var p in parameters) {
+	                if (parameters.hasOwnProperty(p)) {
+	                    params.push(p + '=' + parameters[p]);
+	                }
+	            }
+	            if (params.length > 0) {
+	                url += '?' + params.join('&');
+	            }
 	        }
 	        this.queue.push(new CallServerTask(url, callConf.method, data, d));
 	        if (this.queue.length === 1) {
@@ -726,6 +689,14 @@
 	        method: 'GET',
 	        url: 'https://www.yammer.com/api/v1/users/current.json'
 	    },
+	    userProfile: {
+	        method: 'GET',
+	        url: 'https://www.yammer.com/api/v1/users/{%userId%}'
+	    },
+	    groupList: {
+	        method: 'GET',
+	        url: 'https://www.yammer.com/api/v1/users/current.json?include_group_memberships=true'
+	    },
 	    allFeed: {
 	        method: 'GET',
 	        url: 'https://www.yammer.com/api/v1/messages.json'
@@ -741,8 +712,168 @@
 	    defaultFeed: {
 	        method: 'GET',
 	        url: 'https://www.yammer.com/api/v1/messages.json/my_feed.json'
+	    },
+	    allGroupFeed: {
+	        method: 'GET',
+	        url: 'https://www.yammer.com/api/v1/messages/general.json'
+	    },
+	    groupFeedById: {
+	        method: 'GET',
+	        url: 'https://www.yammer.com/api/v1/messages/in_group/{%groupId%}'
+	    },
+	    currentNetworkUsers: {
+	        method: 'GET',
+	        url: 'https://www.yammer.com/api/v1/networks/current.json'
+	    },
+	    threadById: {
+	        method: 'GET',
+	        url: 'https://www.yammer.com/api/v1/messages/in_thread/{%threadId%}.json'
+	    },
+	    search: {
+	        method: 'GET',
+	        url: 'https://www.yammer.com/api/v1/search.json'
 	    }
 	};
+
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/// <reference path="../../typings/index.d.ts" />
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(1);
+	var Helpers_1 = __webpack_require__(6);
+	var Yammer_1 = __webpack_require__(5);
+	var FeedItem = (function (_super) {
+	    __extends(FeedItem, _super);
+	    function FeedItem(props) {
+	        _super.call(this, props);
+	        this.state = props.message;
+	    }
+	    FeedItem.prototype.render = function () {
+	        var message = this.state;
+	        var sender = Yammer_1.User.Box(Helpers_1.Utils.getReferenceById(message.sender_type, message.sender_id, this.props.references));
+	        var group = Yammer_1.Group.Box(Helpers_1.Utils.getReferenceById('group', message.group_created_id, this.props.references));
+	        var innerHtml = {
+	            __html: message.body
+	        };
+	        return (React.createElement("div", {className: "msg"}, React.createElement("div", {className: "row"}, React.createElement("div", {className: "header"}, React.createElement("div", {className: "sender"}, React.createElement("div", {className: "pic"}, React.createElement("a", {href: "javascript:void()"}, React.createElement("img", {src: sender.mugshot_url}))), React.createElement("div", {className: "name"}, sender.full_name)))), React.createElement("div", {className: "row"}, React.createElement("div", {dangerouslySetInnerHTML: innerHtml}), message.attachments.map(function (attch) {
+	            console.log(attch.content);
+	            var attchInnerHtml = {
+	                __html: attch.content
+	            };
+	            return (React.createElement("div", {key: attch.id, className: "row"}, React.createElement("h3", null, attch.name), React.createElement("div", {dangerouslySetInnerHTML: attchInnerHtml})));
+	        }))));
+	    };
+	    return FeedItem;
+	}(React.Component));
+	exports.FeedItem = FeedItem;
+	var Feed = (function (_super) {
+	    __extends(Feed, _super);
+	    function Feed(props) {
+	        _super.call(this, props);
+	        this.notLoaded = true;
+	        this.state = {
+	            references: new Array(),
+	            messages: new Array()
+	        };
+	    }
+	    Feed.prototype.changeState = function (state) {
+	        if (this.notLoaded ||
+	            this.currentStateId === state) {
+	            return;
+	        }
+	        this.currentStateId = state;
+	        var apiName;
+	        switch (state) {
+	            case 'top':
+	                apiName = 'topFeed';
+	                break;
+	            case 'following':
+	                apiName = 'followingFeed';
+	                break;
+	            case 'all':
+	            default:
+	                this.currentStateId = 'all';
+	                apiName = 'allFeed';
+	        }
+	        var p = this.props.api.call(apiName, {}, { threaded: 'extended', limit: '20' });
+	        p.done(function (data) {
+	            this.setState({
+	                references: data.references,
+	                messages: data.messages.map(function (msg) { return Yammer_1.Message.Box(msg); })
+	            });
+	        }.bind(this));
+	    };
+	    Feed.prototype.componentDidMount = function () {
+	        this.notLoaded = false;
+	        this.changeState(this.props.stateId);
+	    };
+	    Feed.prototype.render = function () {
+	        var self = this;
+	        return (React.createElement("div", null, this.state.messages.map(function (msg) {
+	            return React.createElement(FeedItem, {key: msg.id, message: msg, references: self.state.references});
+	        })));
+	    };
+	    return Feed;
+	}(React.Component));
+	exports.Feed = Feed;
+
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/// <reference path="../../typings/index.d.ts" />
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(1);
+	var NavPills = (function (_super) {
+	    __extends(NavPills, _super);
+	    function NavPills(props) {
+	        _super.call(this, props);
+	        this.state = {
+	            navs: []
+	        };
+	    }
+	    // https://discuss.reactjs.org/t/is-this-a-decent-pattern-to-update-parent-state-from-children/560
+	    NavPills.prototype.handleClick = function (id) {
+	        this.props.navClicked(id);
+	        this.makeActive(id);
+	        return false;
+	    };
+	    NavPills.prototype.changeNavs = function (newNavs) {
+	        this.setState({
+	            navs: newNavs
+	        });
+	    };
+	    NavPills.prototype.makeActive = function (id) {
+	        $('#header li').removeClass('active');
+	        console.log($('#header li[data-nav="' + id + '"]'));
+	        $('#header li[data-nav="' + id + '"]').addClass('active');
+	    };
+	    NavPills.prototype.componentDidMount = function () {
+	        console.log($('#header li:first'));
+	        $('#header li:first').addClass('active');
+	    };
+	    NavPills.prototype.render = function () {
+	        return (React.createElement("ul", null, this.state.navs.map(function (nav) {
+	            return (React.createElement("li", {key: nav.id}, React.createElement("a", {href: "#", className: "uppercase", "data-nav": nav.id, onClick: this.handleClick.bind(this, nav.id)}, nav.displayText)));
+	        }.bind(this))));
+	    };
+	    return NavPills;
+	}(React.Component));
+	exports.NavPills = NavPills;
 
 
 /***/ }

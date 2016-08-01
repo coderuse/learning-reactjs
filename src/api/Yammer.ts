@@ -43,7 +43,7 @@ export class YamAPI {
     });
   }
 
-  call(name: string, data: any, parameters?: {[key: string]: string}): JQueryPromise<any> {
+  call(name: string, data: any, parameters?: { [key: string]: string }, urlInputs?: { [key: string]: string }): JQueryPromise<any> {
     let callConf = endPoints[name];
 
     if (typeof callConf === 'undefined') {
@@ -54,15 +54,27 @@ export class YamAPI {
 
     let params = new Array<string>();
 
-    for (var p in parameters) {
-      if (parameters.hasOwnProperty(p)) {
-        params.push(p + '=' + parameters[p]);
+    let url = callConf.url;
+    // This is costly regarding the space and computation. Use this cautiously
+    if (urlInputs) {
+      for (var i in urlInputs) {
+        if (urlInputs.hasOwnProperty(i)) {
+          let r = new RegExp('/\{%' + i + '%\}', 'g');
+          url.replace(r, urlInputs[i]);
+        }
       }
     }
 
-    let url = callConf.url;
-    if (params.length > 0) {
-      url += '?' + params.join('&');
+    if (parameters) {
+      for (var p in parameters) {
+        if (parameters.hasOwnProperty(p)) {
+          params.push(p + '=' + parameters[p]);
+        }
+      }
+
+      if (params.length > 0) {
+        url += '?' + params.join('&');
+      }
     }
 
     this.queue.push(new CallServerTask(url, callConf.method, data, d));

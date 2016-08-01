@@ -3,10 +3,13 @@
 import * as React from "react";
 import {Utils} from "../Helpers";
 
-import { Feed } from './Feed';
+import { feedNavs } from '../Constants';
 
 import {Message, References, User, Group} from '../models/Yammer';
 import { YamAPI } from '../api/Yammer';
+
+import { Feed } from './Feed';
+import { NavPills, INav } from './Navs';
 
 export interface IYamAppProp {
   accessToken: string
@@ -18,6 +21,7 @@ export interface IYamAppState {
 
 export class YamApp extends React.Component<IYamAppProp, IYamAppState> {
   api: YamAPI;
+  navs: Array<INav>;
   constructor(props: IYamAppProp) {
     super(props);
 
@@ -28,11 +32,18 @@ export class YamApp extends React.Component<IYamAppProp, IYamAppState> {
     this.api = new YamAPI(props.accessToken);
   }
 
+  navClicked(id: string) {
+    (this.refs['feed'] as Feed).changeState(id);
+    console.log(id);
+  }
+
   componentDidMount() {
+    (this.refs['headerPills'] as NavPills).changeNavs(feedNavs);
+
     let p = this.api.call('currentUser', {});
 
     p.done(function (data: any) {
-      
+
       this.setState({
         currentUser: User.Box(data)
       });
@@ -45,9 +56,11 @@ export class YamApp extends React.Component<IYamAppProp, IYamAppState> {
       <div>
         <div id="header">
           <img className="circle" src={this.state.currentUser.mugshot_url} />
+
+          <NavPills ref="headerPills" navClicked={ this.navClicked.bind(this) } />
         </div>
         <div id="content">
-          <Feed api={ this.api }/>
+          <Feed ref="feed" api={ this.api } stateId="all"/>
         </div>
         <div id="footer">
           <a href="javascript:void();" className="active">

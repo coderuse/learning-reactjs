@@ -66,22 +66,43 @@ export class FeedItem extends React.Component<IFeedItemProp, Message> {
 }
 
 export interface IFeedProp {
-  api: YamAPI
+  api: YamAPI,
+  stateId?: string
 }
 
-export interface FeedState { references: Array<any>, messages: Array<Message> }
+export interface IFeedState { references: Array<any>, messages: Array<Message> }
 
-export class Feed extends React.Component<IFeedProp, FeedState> {
+export class Feed extends React.Component<IFeedProp, IFeedState> {
+  notLoaded: boolean;
+  currentStateId: string;
   constructor(props: IFeedProp) {
     super(props);
+    this.notLoaded = true;
     this.state = {
       references: new Array(),
       messages: new Array<Message>()
     };
   }
 
-  componentDidMount() {
-    let p = this.props.api.call('allFeed', {}, { threaded: 'extended', limit: '20' });
+  changeState(state: string) {
+    if (this.notLoaded ||
+      this.currentStateId === state) {
+      return;
+    }
+    this.currentStateId = state;
+
+    let apiName: string;
+    switch (state) {
+      case 'top':
+        apiName = 'topFeed'; break;
+      case 'following':
+        apiName = 'followingFeed'; break;
+      case 'all': default:
+        this.currentStateId = 'all';
+        apiName = 'allFeed';
+    }
+
+    let p = this.props.api.call(apiName, {}, { threaded: 'extended', limit: '20' });
 
     p.done(function (data: any) {
 
@@ -90,7 +111,12 @@ export class Feed extends React.Component<IFeedProp, FeedState> {
         messages: data.messages.map((msg: any) => { return Message.Box(msg); })
       });
 
-    }.bind(this))
+    }.bind(this));
+  }
+
+  componentDidMount() {
+    this.notLoaded = false;
+    this.changeState(this.props.stateId);
   }
 
   render() {
